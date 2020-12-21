@@ -4,9 +4,17 @@ const Customer = function(customer) {
 };
 
 
-Bank.validateKyc = result => {
-  console.log("Starting...");
-  
+Customer.validateKyc = result => {
+   sql.query("SELECT * FROM banks", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    console.log("NSEBanksList: ", res);
+    result(null, res);
+  });
   };
 
 

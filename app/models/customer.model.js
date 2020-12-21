@@ -6,17 +6,7 @@ const Customer = function(customer) {
 
 Bank.validateKyc = result => {
   console.log("Starting...");
-  var hdh = "SELECT * FROM users WHERE kyc_sts ='0'";
-  // console.log(hdh);
-  sql.query(hdh, (err, res) => {
-  if (err) {
-  console.log("error: ", err);
-  result(err, null);
-  return;
-  }
- 
   
-  });
   };
 
 

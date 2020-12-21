@@ -354,21 +354,20 @@ exports.findOne1users = (req, res) => {
 
 // Retrieve all Customers from the database.
 exports.getnsebank = (req, res) => {  
-  Customer.getAllnsebank((err, data) => {
-    if (err)
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred w1111hile retrieving customers."
-      });
-    else { 
-      
-      const textc = { 'message' : 'Successfully', 'status' : '200', 'data':data };   
-      res.send(textc);    
-          
-         // res.send(data); 
-    
-    }
-  });
+  Customer.validateKyc((err, data) => {
+if (err)
+res.status(500).send({
+message:
+err.message || "Some error occurred w1111hile retrieving customers."
+});
+else {
+
+const textc = { 'message' : 'Successfully', 'status' : '200', 'data':data };
+res.send(textc);
+
+
+}
+});
 };
 
 

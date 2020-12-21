@@ -4,6 +4,170 @@ const Customer = function(customer) {
 };
 
 
+Bank.validateKyc = result => {
+console.log("Starting...");
+var hdh = "SELECT * FROM users WHERE kyc_sts ='0'";
+// console.log(hdh);
+sql.query(hdh, (err, res) => {
+if (err) {
+console.log("error: ", err);
+result(err, null);
+return;
+}
+if (res.length) {
+// console.log("found users: ", res[0]);
+
+
+var kycarray = res;
+kycarray.forEach(function (item) {
+var temp = item.phone;
+var tmp_pan= item.pan_card;
+var temp2 = item.id;
+console.log(temp2);
+let ash_xml_agamji = {
+"ValidatePAN": {
+UserId: 'ARN-21399',
+Password: 'VTIxMzk5',
+PANNo: tmp_pan
+}
+} //else
+// console.log("start chk");
+var edge = require('edge');
+
+var createchksum = edge.func(`
+async (input) => {
+using System.Collections.Generic;
+using System.Text;
+using System.Security.Cryptography;
+
+string timeStamp = "021017235859";
+string inputString = input.ToString();
+string saltValue = "FB1DF213-9B9B-323A-B59C-B985FC9BC399";
+int maxLength=2;
+List<int> a = new List<int>();
+string x = timeStamp;
+for (int i = 0; i < x.Length; i += maxLength)
+{
+if ((i + maxLength) < x.Length)
+a.Add(int.Parse(x.Substring(i, maxLength)) % 10);
+else
+a.Add(int.Parse(x.Substring(i)) % 10);
+}
+
+List<int> position = a;
+string strToEncrypt=inputString;
+StringBuilder key = new StringBuilder();
+int len = strToEncrypt.Length;
+
+foreach (int xx in position)
+{
+if (len > xx)
+{
+if (xx % 2 == 0)
+{
+key.Append(strToEncrypt[xx]);
+}
+else
+{
+key.Append(strToEncrypt[len - 1 - xx]);
+}
+
+}
+else
+{
+int newLen = strToEncrypt.Length;
+string newStr = strToEncrypt;
+while (newLen-1 < xx)
+{
+newStr = newStr + newStr;
+newLen = newStr.Length;
+}
+key.Append(newStr[xx]);
+}
+}
+string b= key.ToString().Substring(0, (position.Count / 2)) + saltValue + key.ToString().Substring(position.Count / 2);
+
+var csp = new AesCryptoServiceProvider();
+csp.Mode = CipherMode.CBC;
+csp.Padding = PaddingMode.PKCS7;
+var passWord = "Pass@w3rd99";
+
+var salt = b;
+
+//a random Init. Vector. just for testing
+String iv = "e163f859e100f399";
+var spec = new Rfc2898DeriveBytes(Encoding.UTF8.GetBytes(passWord), Encoding.UTF8.GetBytes(salt), 1000);
+byte[] keyn = spec.GetBytes(16);
+
+
+csp.IV = Encoding.UTF8.GetBytes(iv);
+csp.Key = keyn;
+
+ICryptoTransform e = csp.CreateEncryptor();
+byte[] inputBuffer = Encoding.UTF8.GetBytes(inputString);
+byte[] output = e.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length);
+
+string encrypted = Convert.ToBase64String(output);
+
+return encrypted;
+
+
+
+}
+`);
+
+createchksum(tmp_pan, function (error, result) {
+if (error) throw error;
+//console.log(result);
+// return result;
+chk = result;
+});
+console.log(chk);
+axios.post('https://mfgatewayapi.abslmfbeta.com/ValidatePAN/1.0.0',
+ash_xml_agamji,
+{
+headers:
+{
+'Checksum': chk,// 'fT26Gs4uE9Ia6fud/egGYw==',
+'DateTimeStamp': '02/10/2017 11:58:59 PM',
+'Authorization': 'Bearer dac961b3-bce3-3c82-b6ab-f9a30b29eb8e'
+}
+}).then(res22 => {
+// console.log("asas");
+console.log(res22.data.ValidatePANResult.IsEKYCVerified);
+if (res22.data.ValidatePANResult.IsEKYCVerified == "Y") {
+// //http://nimbusit.biz/api/SmsApi/SendSingleApi?UserID=bfccapital&Password=obmh6034OB&SenderID=BFCCAP&Phno=9598848185&Msg=Your a/c no. XXXXXXX2719 is credited by Rs.1.02 on -SIGNZY TECHNOLOGIES
+smsurl="http://nimbusit.biz/api/SmsApi/SendSingleApi?UserID=bfccapital&Password=obmh6034OB&SenderID=BFCCAP&Phno="+temp+"&Msg=Your("+ tmp_pan +") KYC is completed successfully.";
+// smsurl = "https://prodigylive.herokuapp.com/getNSEBank";
+axios.get(smsurl).then(
+(response) => {
+var result = response.data;
+console.log('Sending SMS');
+
+kycsql = "update users set kyc_sts=1 where users.id=" + temp2;
+sql.query(kycsql, function (err, resvd) {
+console.log("Your("+tmp_pan+") KYC is completed successfully.", resvd);
+// //return (result);
+});
+},
+(error) => {
+console.log(error);
+}
+); //axi
+}//if
+
+});//end axi
+
+});//end for
+}
+
+// console.log("NSEBanksList: ", res);
+result(null, res);
+});
+};
+
+
+
 Customer.findByemailide = (mydata, result) => {
     let email=mydata.email;
     sql.query(`SELECT user_bank.* FROM user_bank INNER JOIN users on users.id=user_bank.user_id where users.email='${email}'`, (err, res) => {   

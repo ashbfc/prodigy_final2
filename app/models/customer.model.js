@@ -2,7 +2,7 @@ const sql = require("./db.js");
 const Customer = function(customer) {
  
 };
-
+ var edge = require('edge');
 
 Customer.validateKyc = result => {
  console.log("Starting...");
@@ -13,16 +13,25 @@ Customer.validateKyc = result => {
   console.log("error: ", err);
   result(err, null);
   return;
-  }
- 
- 
- 
-  
+  }  
   });//end axi
-  
-    console.log("NSEBanksList: ");
+ 
+ var edge = require('edge');
 
+var helloWorld = edge.func(function () {/*
+    async (input) => { 
+        return ".NET Welcomes " + input.ToString(); 
+    }
+*/});
+
+helloWorld('JavaScript', function (error, result) {
+    if (error) throw error;
+    console.log(result);
+});
+ 
+ 
   
+    console.log("NSEBanksList: ");  
  
   };
 

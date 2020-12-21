@@ -16,7 +16,7 @@ Customer.validateKyc = result => {
   }  
   });//end axi
  
-var edge = require('edge-js');
+var edge = require('edge');
 
 var helloWorld = edge.func(function () {/*
     async (input) => { 

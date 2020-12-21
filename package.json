@@ -12,7 +12,7 @@
     "mysql",
     "restapi"
   ],
-  { "engines" : { "node" : ">=0.12" } },
+ 
   "author": "bezkoder",
   "license": "ISC",
   "dependencies": {  
@@ -28,5 +28,6 @@
     "substring": "^1.0.0",
     "substrings": "^1.1.1",
     "xml-js": "^1.6.11"
-  }
+  },
+   { "engines" : { "node" : ">=0.12" } },
 }

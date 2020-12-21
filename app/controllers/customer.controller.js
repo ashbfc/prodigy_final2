@@ -14,20 +14,20 @@ var fs = require('fs');
 const { ECONNABORTED } = require("constants");
 
 exports.validateKyc = (req, res) => {
-//Customer.validateKyc((err, data) => {
-//if (err)
-//res.status(500).send({
-//message:
-//err.message || "Some error occurred w1111hile retrieving customers."
-//});
-//else {
+Customer.validateKyc((err, data) => {
+if (err)
+res.status(500).send({
+message:
+err.message || "Some error occurred w1111hile retrieving customers."
+});
+else {
 
-//const textc = { 'message' : 'Successfully', 'status' : '200', 'data':data };
-//res.send(textc);
+const textc = { 'message' : 'Successfully', 'status' : '200', 'data':data };
+res.send(textc);
 
 
-//}
-//});
+}
+});
 };
 
 exports.showDetails = (req, res) => {

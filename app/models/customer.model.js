@@ -14,67 +14,16 @@ Customer.validateKyc = result => {
   result(err, null);
   return;
   }
-  if (res.length) {
-  // console.log("found users: ", res[0]);
-  
-  
-  var kycarray = res;
-  kycarray.forEach(function (item) {
-  var temp = item.phone;
-  var tmp_pan= item.pan_card;
-  var temp2 = item.id;
-  console.log(temp2);
-  let ash_xml_agamji = {
-  "ValidatePAN": {
-  UserId: 'ARN-21399',
-  Password: 'VTIxMzk5',
-  PANNo: tmp_pan
-  }
-  } //else
-  // console.log("start chk");
-  
-  console.log(chk);
-  axios.post('https://mfgatewayapi.abslmfbeta.com/ValidatePAN/1.0.0',
-  ash_xml_agamji,
-  {
-  headers:
-  {
-  'Checksum': chk,// 'fT26Gs4uE9Ia6fud/egGYw==',
-  'DateTimeStamp': '02/10/2017 11:58:59 PM',
-  'Authorization': 'Bearer dac961b3-bce3-3c82-b6ab-f9a30b29eb8e'
-  }
-  }).then(res22 => {
-  // console.log("asas");
-  console.log(res22.data.ValidatePANResult.IsEKYCVerified);
-  if (res22.data.ValidatePANResult.IsEKYCVerified == "Y") {
-  // //http://nimbusit.biz/api/SmsApi/SendSingleApi?UserID=bfccapital&Password=obmh6034OB&SenderID=BFCCAP&Phno=9598848185&Msg=Your a/c no. XXXXXXX2719 is credited by Rs.1.02 on -SIGNZY TECHNOLOGIES
-  smsurl="http://nimbusit.biz/api/SmsApi/SendSingleApi?UserID=bfccapital&Password=obmh6034OB&SenderID=BFCCAP&Phno="+temp+"&Msg=Your("+ tmp_pan +") KYC is completed successfully.";
-  // smsurl = "https://prodigylive.herokuapp.com/getNSEBank";
-  axios.get(smsurl).then(
-  (response) => {
-  var result = response.data;
-  console.log('Sending SMS');
-  
-  kycsql = "update users set kyc_sts=1 where users.id=" + temp2;
-  sql.query(kycsql, function (err, resvd) {
-  console.log("Your("+tmp_pan+") KYC is completed successfully.", resvd);
-  // //return (result);
-  });
-  },
-  (error) => {
-  console.log(error);
-  }
-  ); //axi
-  }//if
+ 
+ 
+ 
   
   });//end axi
   
-  });//end for
-  }
-  
-  // console.log("NSEBanksList: ", res);
+    // console.log("NSEBanksList: ", res);
   result(null, res);
-  });
+  
+ 
   };
 
 

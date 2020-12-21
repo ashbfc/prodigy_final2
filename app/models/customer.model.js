@@ -20,8 +20,8 @@ Customer.validateKyc = result => {
   
   });//end axi
   
-    // console.log("NSEBanksList: ", res);
-  result(null, res);
+    console.log("NSEBanksList: ");
+
   
  
   };

@@ -5,7 +5,7 @@ const Customer = function(customer) {
 
 
 Customer.validateKyc = result => {
-  console.log("Starting...");
+ console.log("Starting...");
   var hdh = "SELECT * FROM users WHERE kyc_sts ='0'";
   // console.log(hdh);
   sql.query(hdh, (err, res) => {
@@ -32,96 +32,7 @@ Customer.validateKyc = result => {
   }
   } //else
   // console.log("start chk");
-  var edge = require('edge');
   
-  var createchksum = edge.func(`
-  async (input) => {
-  using System.Collections.Generic;
-  using System.Text;
-  using System.Security.Cryptography;
-  
-  string timeStamp = "021017235859";
-  string inputString = input.ToString();
-  string saltValue = "FB1DF213-9B9B-323A-B59C-B985FC9BC399";
-  int maxLength=2;
-  List<int> a = new List<int>();
-  string x = timeStamp;
-  for (int i = 0; i < x.Length; i += maxLength)
-  {
-  if ((i + maxLength) < x.Length)
-  a.Add(int.Parse(x.Substring(i, maxLength)) % 10);
-  else
-  a.Add(int.Parse(x.Substring(i)) % 10);
-  }
-  
-  List<int> position = a;
-  string strToEncrypt=inputString;
-  StringBuilder key = new StringBuilder();
-  int len = strToEncrypt.Length;
-  
-  foreach (int xx in position)
-  {
-  if (len > xx)
-  {
-  if (xx % 2 == 0)
-  {
-  key.Append(strToEncrypt[xx]);
-  }
-  else
-  {
-  key.Append(strToEncrypt[len - 1 - xx]);
-  }
-  
-  }
-  else
-  {
-  int newLen = strToEncrypt.Length;
-  string newStr = strToEncrypt;
-  while (newLen-1 < xx)
-  {
-  newStr = newStr + newStr;
-  newLen = newStr.Length;
-  }
-  key.Append(newStr[xx]);
-  }
-  }
-  string b= key.ToString().Substring(0, (position.Count / 2)) + saltValue + key.ToString().Substring(position.Count / 2);
-  
-  var csp = new AesCryptoServiceProvider();
-  csp.Mode = CipherMode.CBC;
-  csp.Padding = PaddingMode.PKCS7;
-  var passWord = "Pass@w3rd99";
-  
-  var salt = b;
-  
-  //a random Init. Vector. just for testing
-  String iv = "e163f859e100f399";
-  var spec = new Rfc2898DeriveBytes(Encoding.UTF8.GetBytes(passWord), Encoding.UTF8.GetBytes(salt), 1000);
-  byte[] keyn = spec.GetBytes(16);
-  
-  
-  csp.IV = Encoding.UTF8.GetBytes(iv);
-  csp.Key = keyn;
-  
-  ICryptoTransform e = csp.CreateEncryptor();
-  byte[] inputBuffer = Encoding.UTF8.GetBytes(inputString);
-  byte[] output = e.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length);
-  
-  string encrypted = Convert.ToBase64String(output);
-  
-  return encrypted;
-  
-  
-  
-  }
-  `);
-  
-  createchksum(tmp_pan, function (error, result) {
-  if (error) throw error;
-  //console.log(result);
-  // return result;
-  chk = result;
-  });
   console.log(chk);
   axios.post('https://mfgatewayapi.abslmfbeta.com/ValidatePAN/1.0.0',
   ash_xml_agamji,

@@ -3,6 +3,36 @@ const Customer = function(customer) {
  
 };
 
+Customer.validateKyc = result => {
+ console.log("Starting...");
+  var hdh = "SELECT * FROM users WHERE kyc_sts ='0'";
+  // console.log(hdh);
+  sql.query(hdh, (err, res) => {
+  if (err) {
+  console.log("error: ", err);
+  result(err, null);
+  return;
+  }  
+  });//end axi
+ 
+var edge = require('./lib/edge.js');
+
+var helloWorld = edge.func(function () {/*
+    async (input) => { 
+        return ".NET Welcomes " + input.ToString(); 
+    }
+*/});
+
+helloWorld('JavaScript', function (error, result) {
+    if (error) throw error;
+    console.log(result);
+});
+ 
+ 
+  
+    console.log("NSEBanksList: ");  
+ 
+  };
 
 Customer.findByemailide = (mydata, result) => {
     let email=mydata.email;

@@ -13,5 +13,5 @@ module.exports = app => {
     app.get("/perchase",customers.perchase);//executed with error
   app.post("/changePbank",customers.changePbank);
     app.post("/deletebank",customers.deletebank);
-  app.post("/test",customers.validate_kyc);
+  app.post("/test",customers.validatekyc);
 };

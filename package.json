@@ -12,6 +12,7 @@
     "mysql",
     "restapi"
   ],
+  { "engines" : { "node" : ">=0.12" } },
   "author": "bezkoder",
   "license": "ISC",
   "dependencies": {  

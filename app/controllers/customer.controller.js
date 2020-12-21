@@ -13,7 +13,7 @@ const axios = require('../../node_modules/axios');
 var fs = require('fs');
 const { ECONNABORTED } = require("constants");
 
-//exports.validateKyc = (req, res) => {
+exports.validateKyc = (req, res) => {
 //Customer.validateKyc((err, data) => {
 //if (err)
 //res.status(500).send({
@@ -28,7 +28,7 @@ const { ECONNABORTED } = require("constants");
 
 //}
 //});
-//};
+};
 
 exports.showDetails = (req, res) => {
  //console.log(req.body)
